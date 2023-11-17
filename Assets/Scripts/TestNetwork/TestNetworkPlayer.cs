@@ -5,17 +5,17 @@ using Unity.Netcode;
 
 public class TestNetworkPlayer : NetworkBehaviour
 {
-    private Vector2 moveInput;
-
+    private NetworkVariable<Vector2> moveInput = new NetworkVariable<Vector2>();
     private float _speed = 0.01f;
 
-    // Start is called before the first frame update
     void Start()
     {
+        moveInput.OnValueChanged = (p, c) =>
+        {
 
+        };
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (IsOwner)
@@ -27,13 +27,13 @@ public class TestNetworkPlayer : NetworkBehaviour
 
         if (IsServer)
         {
-            transform.position += new Vector3(moveInput.x, 0, moveInput.y)*_speed;
+            transform.position += new Vector3(moveInput.Value.x, 0, moveInput.Value.y) * _speed;
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void SetMoveInputServerRpc(float x, float y)
     {
-        this.moveInput = new Vector2(x, y);
+        this.moveInput.Value = new Vector2(x, y);
     }
 }

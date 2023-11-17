@@ -8,6 +8,7 @@ public class TestNetworkManager : MonoBehaviour
 {
     [SerializeField] private Button hostButton;
     [SerializeField] private Button clientButton;
+
     private void Awake()
     {
 
